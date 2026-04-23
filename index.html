@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双人魔法对战</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="selection-screen" class="screen">
+        <h1>双人魔法对战</h1>
+        <div class="network-panel">
+            <h2>联机大厅</h2>
+            <div class="network-actions">
+                <button id="local-mode-btn" class="mode-btn">本地双人</button>
+                <button id="host-room-btn" class="mode-btn primary">创建房间</button>
+                <button id="copy-room-btn" class="mode-btn">复制房间码</button>
+            </div>
+            <div class="join-row">
+                <input id="room-id-input" type="text" placeholder="输入房间码后加入">
+                <button id="join-room-btn" class="mode-btn">加入房间</button>
+            </div>
+            <p id="room-code">房间码：未创建</p>
+            <p id="network-status">当前为本地双人模式</p>
+        </div>
+        <div class="controls">
+            <div class="player-card">
+                <h3>玩家 A</h3>
+                <p>移动：W A S D</p>
+                <p>法系：1(火系) 2(水系) 3(土系) 4(风系)</p>
+                <p>技能：1 2 3 4 5</p>
+                <p id="p1-status">当前选择：等待中...</p>
+            </div>
+            <div class="player-card p2">
+                <h3>玩家 B</h3>
+                <p>移动：↑ ↓ ← →</p>
+                <p>法系：7(风系) 8(火系) 9(水系) 0(土系)</p>
+                <p>技能：8 9 0 - =</p>
+                <p id="p2-status">当前选择：等待中...</p>
+            </div>
+        </div>
+        <h2 id="start-tip">本地模式：双方在同一台电脑选择法系后自动开始</h2>
+    </div>
+    
+    <!-- 2. 游戏对战界面 -->
+    <div id="game-screen" class="hidden">
+        <canvas id="gameCanvas" width="1000" height="600"></canvas>
+        <div class="ui-layer">
+            <div class="player-ui left">
+                <div class="health-bar-container"><div class="health-bar" id="p1-hp"></div></div>
+                <div class="mana-bar-container"><div class="mana-bar" id="p1-mp"></div></div>
+                <div class="skills-ui" id="p1-skills"></div>
+            </div>
+            <div class="player-ui right">
+                <div class="health-bar-container"><div class="health-bar" id="p2-hp"></div></div>
+                <div class="mana-bar-container"><div class="mana-bar" id="p2-mp"></div></div>
+                <div class="skills-ui" id="p2-skills"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="end-screen" class="screen hidden">
+        <h1 id="winner-text">游戏结束</h1>
+        <button onclick="location.reload()" class="restart-btn">重新开始</button>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
