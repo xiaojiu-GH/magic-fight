@@ -1,0 +1,229 @@
+body {
+    margin: 0;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+canvas {
+    background-color: #34495e;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    margin-top: 20px;
+    border-radius: 8px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(44, 62, 80, 0.95);
+    z-index: 10;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.network-panel {
+    width: min(760px, 92vw);
+    margin-bottom: 24px;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.22);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.network-panel h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.network-actions,
+.join-row,
+.controls {
+    display: flex;
+    gap: 14px;
+}
+
+.network-actions,
+.join-row {
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.controls {
+    gap: 36px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.player-card {
+    background: #27ae60;
+    padding: 26px;
+    border-radius: 12px;
+    width: 260px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.player-card.p2 {
+    background: #c0392b;
+}
+
+.player-card h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+
+.mode-btn,
+.restart-btn {
+    padding: 12px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.mode-btn:hover,
+.restart-btn:hover {
+    transform: translateY(-1px);
+    background-color: #2980b9;
+}
+
+.mode-btn.primary {
+    background-color: #16a085;
+}
+
+.mode-btn.primary:hover {
+    background-color: #138d75;
+}
+
+#room-id-input {
+    width: 260px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: #ecf0f1;
+    outline: none;
+}
+
+#room-id-input::placeholder {
+    color: rgba(236,240,241,0.6);
+}
+
+#room-code,
+#network-status,
+#start-tip {
+    opacity: 0.92;
+}
+
+#network-status[data-tone="success"] {
+    color: #7bed9f;
+}
+
+#network-status[data-tone="error"] {
+    color: #ff9f43;
+}
+
+/* UI Layer over Canvas */
+.ui-layer {
+    position: absolute;
+    top: 30px;
+    width: 1000px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.player-ui {
+    width: 300px;
+    padding: 10px;
+}
+
+.player-ui.left { text-align: left; }
+.player-ui.right { text-align: right; }
+
+.health-bar-container, .mana-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #7f8c8d;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    border: 2px solid #2c3e50;
+}
+
+.mana-bar-container {
+    height: 12px;
+    margin-bottom: 10px;
+}
+
+.health-bar, .mana-bar {
+    height: 100%;
+    width: 100%;
+    transition: width 0.1s linear;
+}
+
+.player-ui.left .health-bar { background-color: #2ecc71; transform-origin: left; }
+.player-ui.right .health-bar { background-color: #e74c3c; float: right; }
+
+.player-ui.left .mana-bar { background-color: #3498db; transform-origin: left; }
+.player-ui.right .mana-bar { background-color: #3498db; float: right; }
+
+.skills-ui {
+    display: flex;
+    gap: 10px;
+}
+
+.player-ui.right .skills-ui {
+    justify-content: flex-end;
+}
+
+.skill-icon {
+    min-width: 40px;
+    padding: 0 5px;
+    height: 40px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 5px;
+    border: 2px solid #bdc3c7;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.skill-icon .cooldown-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.7);
+    height: 0%;
+    border-radius: 3px;
+    transition: height 0.1s linear;
+}
+
+.skill-icon span {
+    z-index: 1;
+    font-size: 12px;
+    white-space: nowrap;
+}
