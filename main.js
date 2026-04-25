@@ -138,6 +138,8 @@ const localBtn = document.getElementById('local-mode-btn');
 const hostBtn = document.getElementById('host-room-btn');
 const joinBtn = document.getElementById('join-room-btn');
 const copyRoomBtn = document.getElementById('copy-room-btn');
+const countdownOverlayEl = document.getElementById('countdown-overlay');
+const countdownTextEl = document.getElementById('countdown-text');
 
 let playerAClass = null;
 let playerBClass = null;
@@ -148,6 +150,7 @@ let particles = [];
 let lastTime = 0;
 let animationStarted = false;
 let startScheduled = false;
+let countdownTimer = null;
 
 const keys = {};
 let remoteKeys = {};
@@ -232,6 +235,46 @@ function setSelectionStatusDefaults() {
     document.getElementById('p2-status').innerText = '当前选择：等待中...';
 }
 
+function clearInputStates() {
+    Object.keys(keys).forEach(key => { keys[key] = false; });
+    remoteKeys = {};
+}
+
+function hideCountdownOverlay() {
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+    }
+    countdownTextEl.innerText = '3';
+    countdownOverlayEl.classList.add('hidden');
+}
+
+function startBattleCountdown(seconds = 3) {
+    hideCountdownOverlay();
+    let remain = seconds;
+    countdownTextEl.innerText = String(remain);
+    countdownOverlayEl.classList.remove('hidden');
+
+    countdownTimer = setInterval(() => {
+        remain -= 1;
+        if (remain > 0) {
+            countdownTextEl.innerText = String(remain);
+            return;
+        }
+
+        hideCountdownOverlay();
+        clearInputStates();
+        currentState = GameState.BATTLE;
+        soundManager.start();
+        lastTime = performance.now();
+
+        if (!animationStarted) {
+            animationStarted = true;
+            requestAnimationFrame(gameLoop);
+        }
+    }, 1000);
+}
+
 function resetRuntimeState() {
     playerAClass = null;
     playerBClass = null;
@@ -241,7 +284,8 @@ function resetRuntimeState() {
     particles = [];
     remoteKeys = {};
     startScheduled = false;
-    Object.keys(keys).forEach(key => { keys[key] = false; });
+    hideCountdownOverlay();
+    clearInputStates();
     currentState = GameState.SELECTION;
     document.getElementById('selection-screen').classList.remove('hidden');
     document.getElementById('game-screen').classList.add('hidden');
@@ -1482,8 +1526,7 @@ function startGame() {
     document.getElementById('selection-screen').classList.add('hidden');
     document.getElementById('end-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
-    currentState = GameState.BATTLE;
-    soundManager.start();
+    currentState = GameState.SELECTION;
 
     entities = [];
     particles = [];
@@ -1494,11 +1537,7 @@ function startGame() {
     p1.initUI();
     p2.initUI();
 
-    lastTime = performance.now();
-    if (!animationStarted) {
-        animationStarted = true;
-        requestAnimationFrame(gameLoop);
-    }
+    startBattleCountdown(3);
 }
 
 function gameLoop(time) {
@@ -1553,6 +1592,7 @@ function draw() {
 
 function endGame(winner, notifyPeer) {
     currentState = GameState.END;
+    hideCountdownOverlay();
     soundManager.win();
     if (notifyPeer && networkMode === NetworkMode.ONLINE && networkRole === NetworkRole.HOST) {
         broadcast({ type: 'end', winner });

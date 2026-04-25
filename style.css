@@ -227,3 +227,21 @@ canvas {
     font-size: 12px;
     white-space: nowrap;
 }
+
+.countdown-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 20;
+    pointer-events: none;
+}
+
+#countdown-text {
+    font-size: 140px;
+    font-weight: 700;
+    color: #ecf0f1;
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
