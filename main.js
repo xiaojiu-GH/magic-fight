@@ -821,7 +821,7 @@ class Player {
                 }));
                 break;
             case 'frostray':
-                entities.push(new Projectile(this, this.x, this.y, dirX, dirY, 1000, 10, '#00a8ff', 'frostray', target => {
+                entities.push(new Projectile(this, this.x, this.y, dirX, dirY, 800, 10, '#00a8ff', 'frostray', target => {
                     target.takeDamage(15, this.className);
                     target.addStatus('slow', 2);
                 }));
@@ -896,7 +896,7 @@ class Player {
                 }));
                 break;
             case 'windblade':
-                entities.push(new Projectile(this, this.x, this.y, dirX, dirY, 800, 10, '#1abc9c', 'windblade', target => {
+                entities.push(new Projectile(this, this.x, this.y, dirX, dirY, 1200, 10, '#1abc9c', 'windblade', target => {
                     target.takeDamage(8, this.className);
                 }));
                 break;
