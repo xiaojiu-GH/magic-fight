@@ -723,7 +723,7 @@ class Player {
             case 'firewall': {
                 const wallX = this.x + dirX * 50;
                 const wallY = this.y + dirY * 50;
-                entities.push(new Wall(this, wallX, wallY, dirX, dirY, 100, 5, '#e67e22', true));
+                entities.push(new Wall(this, wallX, wallY, dirX, dirY, 100, 4, '#e67e22', true));
                 break;
             }
             case 'meteor':
@@ -1024,6 +1024,8 @@ class Wall {
         this.color = color;
         this.active = true;
         this.damaging = damaging;
+        this.damageTickTimer = 0;
+        this.burnTickTimer = 0;
     }
 
     update(dt) {
@@ -1051,8 +1053,22 @@ class Wall {
             const enemy = this.owner === p1 ? p2 : p1;
             const dist = Math.hypot(this.x - enemy.x, this.y - enemy.y);
             if (dist < this.length / 2 + enemy.radius) {
-                enemy.takeDamage(2, this.owner.className);
-                enemy.addStatus('burn', 0.6);
+                this.damageTickTimer += dt;
+                this.burnTickTimer += dt;
+
+                // 火墙改为固定频率结算，避免按帧伤害过高。
+                if (this.damageTickTimer >= 0.25) {
+                    enemy.takeDamage(4, this.owner.className);
+                    this.damageTickTimer = 0;
+                }
+
+                if (this.burnTickTimer >= 0.75) {
+                    enemy.addStatus('burn', 1.5);
+                    this.burnTickTimer = 0;
+                }
+            } else {
+                this.damageTickTimer = 0;
+                this.burnTickTimer = 0;
             }
         }
     }
