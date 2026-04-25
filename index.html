@@ -14,11 +14,13 @@
             <div class="network-actions">
                 <button id="local-mode-btn" class="mode-btn">本地双人</button>
                 <button id="host-room-btn" class="mode-btn primary">创建房间</button>
+                <button id="delete-room-btn" class="mode-btn hidden">删除房间</button>
                 <button id="copy-room-btn" class="mode-btn">复制房间码</button>
             </div>
             <div class="join-row">
                 <input id="room-id-input" type="text" placeholder="输入房间码后加入">
                 <button id="join-room-btn" class="mode-btn">加入房间</button>
+                <button id="disconnect-btn" class="mode-btn hidden">断开连接</button>
             </div>
             <p id="room-code">房间码：未创建</p>
             <p id="network-status">当前为本地双人模式</p>
@@ -64,7 +66,7 @@
 
     <div id="end-screen" class="screen hidden">
         <h1 id="winner-text">游戏结束</h1>
-        <button onclick="location.reload()" class="restart-btn">重新开始</button>
+        <button id="return-lobby-btn" class="restart-btn">返回大厅</button>
     </div>
 
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
